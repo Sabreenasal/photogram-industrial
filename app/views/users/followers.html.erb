@@ -1,0 +1,9 @@
+<%= render partial: "users/navbar" %>
+
+<div class="col-md-6 offset-md-3" >
+  <div class="list-group">
+    <% @user.followers.each do |follower| %>
+      <%= link_to "#{follower.username}", user_path(follower.username), class: "list-group-item" %>
+    <% end %>
+  </div>
+</div>
