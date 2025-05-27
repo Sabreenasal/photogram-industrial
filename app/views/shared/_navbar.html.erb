@@ -1,15 +1,6 @@
-<html>
-  <head>
-    <title><%= content_for(:title) || "Photogram Industrial" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<%= render partial: "shared/cdn_assets" %>
 
-    <%= render partial: "shared/cdn_assets" %>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
   <div class="container">
 <!-- <a class="navbar-brand" href="#">Navbar</a> -->
   <%= link_to "Photogram (Industrial)", root_path, class: "navbar-brand" %>
