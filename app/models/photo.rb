@@ -20,6 +20,9 @@
 #  fk_rails_...  (owner_id => users.id)
 #
 class Photo < ApplicationRecord
+  mount_uploader :image, ImageUploader
+
+  
   belongs_to :owner, class_name: "User"
   has_many :comments
   has_many :likes
