@@ -12,14 +12,14 @@ class UsersController < ApplicationController
   end
 
   def feed
-    @user = User.find_by!(username: params.fetch(:username))
+    @user = current_user
   end
   
   def followers
-    @user = User.find_by!(username: params.fetch(:username))
+     @user = current_user
   end
 
   def following
-     @user = User.find_by!(username: params.fetch(:username))
+      @user = current_user
   end
 end
