@@ -1,5 +1,9 @@
 class UsersController < ApplicationController
-  def show
+  def index 
+    @user = User.all
+  end
+    
+    def show
     @user = User.find_by!(username: params.fetch(:username))
   end
   
@@ -22,4 +26,5 @@ class UsersController < ApplicationController
   def following
       @user = current_user
   end
+
 end
