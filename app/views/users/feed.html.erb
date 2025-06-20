@@ -1,7 +1,19 @@
-<%= render partial: "users/navbar" %>
+
+<div class="container">
+  <div class="col-md-6 offset-md-3">
+
+    <h1>feed </h1>
+
+    <p>posts by people you follow</p>
+
+ <%= form.button class="btn btn-link" do %>
+  <i class="far fa-heart fa-fw"></i>
+  <% end %>
+  
 
 <% @user.feed.each do |photo| %>
   <%= render "photos/photo", photo: photo %>
+  
 <% end %>
-
-
+</div>
+</div>
