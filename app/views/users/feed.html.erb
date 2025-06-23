@@ -1,18 +1,24 @@
-<div class="container">
-  <div class="col-md-6 offset-md-3">
+<h1>Feed</h1>
+<h5>people you follow</h5>
+<% @user.feed.each do |photo| %>
+  <%= render "photos/photo", photo: photo %>
 
-    <h1>feed</h1>
-    <p>posts by people you follow</p>
+  <% photo.comments.each do |comment| %>
+    <div class="comment">
+      <p><%= comment.body %></p>
 
-    <%#= form_with url: like_path, method: :post do |form| %>
-      <%#= form.button class: "btn btn-link" do %>
-<!--        <i class="far fa-heart fa-fw"></i>-->
-      <%# end %>
-    <%# end %>
+      <% if comment.author == current_user %>
+        <div>
+          <%= link_to edit_comment_path(comment), class: "btn btn-link btn-sm text-muted" do %>
+            <i class="fas fa-edit fa-fw"></i>
+          <% end %>
 
-    <% @user.feed.each do |photo| %>
-      <%= render "photos/photo", photo: photo %>
-    <% end %>
+          <%= button_to comment_path(comment), method: :delete, params: { redirect_to: request.fullpath }, class: "btn btn-link btn-sm text-muted", form_class: "btn btn-sm btn-link" do %>
+  <i class="fas fa-trash fa-fw"></i> Delete
+<% end %>
 
-  </div>
-</div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
