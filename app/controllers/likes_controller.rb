@@ -25,7 +25,7 @@ class LikesController < ApplicationController
 
     respond_to do |format|
       if @like.save
-        format.html { redirect_to @like, notice: "Like was successfully created." }
+        format.html { redirect_to feed_path(username: current_user.username), notice: "Like was successfully created." }
         format.json { render :show, status: :created, location: @like }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -52,7 +52,7 @@ class LikesController < ApplicationController
     @like.destroy!
 
     respond_to do |format|
-      format.html { redirect_to likes_path, status: :see_other, notice: "Like was successfully destroyed." }
+      format.html { redirect_to feed_path(username: current_user.username), status: :see_other, notice: "Like was successfully destroyed." }
       format.json { head :no_content }
     end
   end

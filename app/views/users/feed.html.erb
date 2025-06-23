@@ -3,6 +3,8 @@
 <% @user.feed.each do |photo| %>
   <%= render "photos/photo", photo: photo %>
 
+  <%= render "photos/likes", photo: photo %>
+
   <% photo.comments.each do |comment| %>
     <div class="comment">
       <p><%= comment.body %></p>
