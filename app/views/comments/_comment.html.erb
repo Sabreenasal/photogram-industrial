@@ -6,7 +6,7 @@
 
   <p>
     <strong>Photo:</strong>
-    <%= comment.photo_id %>
+    <%= link_to comment.author.username, user_path(comment.author.username),class: "text-dark link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" %>
   </p>
 
   <p>

@@ -75,7 +75,7 @@ gem "cloudinary"
 gem "kaminari"
 
 group :development do
-  
+  gem "rails_db"
   gem "annotaterb"
   gem "better_errors"
   gem "binding_of_caller"
