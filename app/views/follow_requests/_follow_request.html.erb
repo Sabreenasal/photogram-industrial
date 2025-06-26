@@ -1,12 +1,23 @@
-<div id="<%= dom_id follow_request %>">
-  <p><strong>Recipient:</strong> <%= follow_request.recipient_id %></p>
-  <p><strong>Sender:</strong> <%= follow_request.sender_id %></p>
-  <p><strong>Status:</strong> <%= follow_request.status %></p>
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title"><%= follow_request.sender.username %></h5>
+    <p class="card-text">
+      Wants to follow you.
+      <br>
+      Status: <%= follow_request.status.capitalize %>
+    </p>
 
-  <% if follow_request.status == 'pending' %>
-    <%= button_to 'Accept', accept_follow_request_path(follow_request), method: :patch, class: "btn btn-success" %>
-    <%= button_to 'Decline', decline_follow_request_path(follow_request), method: :patch, class: "btn btn-danger" %>
-  <% end %>
+    <% if follow_request.status == "pending" && follow_request.recipient == current_user %>
+      <div class="d-flex gap-2">
+        <%= button_to accept_follow_request_path(follow_request), method: :patch, class: "btn btn-success btn-sm" do %>
+          Accept <%= follow_request.sender.username %>'s request
+        <% end %>
+
+        <%= button_to reject_follow_request_path(follow_request), method: :patch, class: "btn btn-danger btn-sm" do %>
+          Decline <%= follow_request.sender.username %>'s request
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>
-
 

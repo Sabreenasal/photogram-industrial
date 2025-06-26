@@ -1,8 +1,30 @@
 <h1>Feed</h1>
 <h5>people you follow</h5>
 <% @user.feed.each do |photo| %>
-  <%= render "photos/photo", photo: photo %>
 
+  <% if photo.owner != current_user %>
+    <% follow_request = FollowRequest.find_by(sender: current_user, recipient: photo.owner) %>
+
+    <% if follow_request.nil? %>
+      <%= button_to follow_requests_path(recipient_id: photo.owner.id), method: :post, class: "btn btn-primary btn-sm" do %>
+        Follow
+      <% end %>
+    <% elsif follow_request.status == "pending" %>
+      <button class="btn btn-warning btn-sm" disabled>Request Pending</button>
+
+    <% elsif follow_request.status == "accepted" %>
+      <%= button_to follow_request_path(follow_request), method: :delete, class: "btn btn-danger btn-sm" do %>
+        Unfollow
+      <% end %>
+
+    <% elsif follow_request.status == "rejected" %>
+      <%= button_to follow_requests_path(recipient_id: photo.owner.id), method: :post, class: "btn btn-primary btn-sm" do %>
+        Re-request Follow
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= render "photos/photo", photo: photo %>
   <%= render "photos/likes", photo: photo %>
 
   <% photo.comments.each do |comment| %>
@@ -18,7 +40,6 @@
           <%= button_to comment_path(comment), method: :delete, params: { redirect_to: request.fullpath }, class: "btn btn-link btn-sm text-muted", form_class: "btn btn-sm btn-link" do %>
             <i class="fas fa-trash fa-fw"></i> Delete
           <% end %>
-
         </div>
       <% end %>
     </div>
