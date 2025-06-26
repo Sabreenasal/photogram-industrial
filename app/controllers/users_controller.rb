@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
   def index 
-    @user = User.all
+    @users = User.all
   end
     
     def show
     @user = User.find_by!(username: params.fetch(:username))
+
   end
   
   def liked
