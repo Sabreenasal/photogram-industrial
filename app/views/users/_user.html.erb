@@ -1,5 +1,11 @@
 <div class="user-profile">
   <h2><%= user.username %></h2>
   <p>Email: <%= user.email %></p>
-  
+<div>
+  <p>
+    Followers: <%= FollowRequest.where(status: "accepted").count %>
+  </p>
+   <p>
+    Pending: <%= FollowRequest.where(status: "Pending").count %>
+  </p>
 </div>

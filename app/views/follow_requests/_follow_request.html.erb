@@ -1,12 +1,38 @@
-<div class="card mb-3">
+<!--<div class="card mb-3">
   <div class="card-body">
-    <h5 class="card-title"><%= follow_request.sender.username %></h5>
+    <h5 class="card-title"><%#= follow_request.sender.username %></h5>
     <p class="card-text">
       Wants to follow you.
       <br>
-      Status: <%= follow_request.status.capitalize %>
+      Status: <%#= follow_request.status.capitalize %>
+    </p>
+    <%# if follow_request.status == "pending" && follow_request.recipient == current_user %>-->
+      <!--<div class="d-flex gap-2">-->
+        <%#= button_to accept_follow_request_path(follow_request), method: :patch, class: "btn btn-success btn-sm" do %>
+<!--          Accept <%#= follow_request.sender.username %>'s request-->
+        <%#=pp "yes"%>
+        <%# end %>
+<!---->
+        <%#= button_to reject_follow_request_path(follow_request), method: :patch, class: "btn btn-danger btn-sm" do %>
+<!--          Decline <%#= follow_request.sender.username %>'s request-->
+        <%# end %>
+<!--      </div>-->
+    <%# end %>
+<!--  </div>
+</div>
+-->
+<div class="card mb-3">
+  <div class="card-body">
+    <!--<h5 class="card-title"><%#= follow_request.sender.username %></h5>-->
+    <p class="card-text">
+      Wants to follow you.
+      <br>
+      <!--Status: <%#= follow_request.status.capitalize %>-->
     </p>
 
+   
+   
+   
     <% if follow_request.status == "pending" && follow_request.recipient == current_user %>
       <div class="d-flex gap-2">
         <%= button_to accept_follow_request_path(follow_request), method: :patch, class: "btn btn-success btn-sm" do %>
@@ -21,3 +47,4 @@
   </div>
 </div>
 
+<!---->
