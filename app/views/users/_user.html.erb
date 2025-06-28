@@ -1,6 +1,9 @@
 
 <div class="user-profile">
   <h2><%= user.username %></h2>
+  <% if user.private? %>
+  <span class="badge text-bg-secondary">Private</span>
+<% end %>
   <p>Email: <%= user.email %></p>
 
   <div>
@@ -26,7 +29,7 @@
     <div class="card-body">
       <h5 class="card-title">Followers</h5>
       <% FollowRequest.where(status: "accepted", recipient: user).each do |request| %>
-        <p><%= request.sender.username %></p>
+        <p><%= link_to request.sender.username %></p>
       <% end %>
     </div>
   </div>
@@ -38,11 +41,6 @@
       <% FollowRequest.where(status: "pending", recipient: user).each do |request| %>
         <p>
           <%= link_to request.sender.username, user_path(request.sender) %><br>
-
-          <% if current_user == user %>
-            <%= button_to "Accept #{request.sender.username}'s request", accept_follow_request_path(request), method: :patch, class: "btn btn-success btn-sm mt-1" %>
-            <%= button_to "Decline #{request.sender.username}'s request", reject_follow_request_path(request), method: :patch, class: "btn btn-danger btn-sm mt-1" %>
-          <% end %>
         </p>
       <% end %>
 
@@ -54,11 +52,22 @@
     <div class="card-body">
       <h5 class="card-title">Sent Follow Requests</h5>
       <% FollowRequest.where(status: "accepted", sender: user).each do |request| %>
-        <p><%= request.recipient.username %></p>
+        <p><%= link_to request.recipient.username %></p>
       <% end %>
     </div>
   </div>
 </div>
+
+<% if current_user.present? && current_user != user %>
+  <% pending_request = FollowRequest.find_by(sender: user, recipient: current_user, status: "pending") %>
+  <% if pending_request.present? %>
+    <div class="mt-3">
+      <p><strong><%= user.username %> has requested to follow you.</strong></p>
+      <%= button_to "Accept #{user.username}'s request", accept_follow_request_path(pending_request), method: :patch, class: "btn btn-success btn-sm" %>
+      <%= button_to "Decline #{user.username}'s request", reject_follow_request_path(pending_request), method: :patch, class: "btn btn-danger btn-sm" %>
+    </div>
+  <% end %>
+<% end %>
 
 <% if current_user.present? && current_user != user %>
   <% existing_request = FollowRequest.find_by(sender: current_user, recipient: user) %>
