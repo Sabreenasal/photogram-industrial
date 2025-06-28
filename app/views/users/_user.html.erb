@@ -1,11 +1,96 @@
+
 <div class="user-profile">
   <h2><%= user.username %></h2>
   <p>Email: <%= user.email %></p>
-<div>
-  <p>
-    Followers: <%= FollowRequest.where(status: "accepted").count %>
-  </p>
-   <p>
-    Pending: <%= FollowRequest.where(status: "Pending").count %>
-  </p>
+
+  <div>
+    <p>
+      <a href="#" onclick="toggleCard('followers-card'); return false;">
+        followers <%= FollowRequest.where(status: "accepted", recipient: user).count %>
+      </a>
+    </p>
+    <p>
+      <a href="#" onclick="toggleCard('pending-card'); return false;">
+        pending <%= FollowRequest.where(status: "pending", recipient: user).count %>
+      </a>
+    </p>
+    <p>
+      <a href="#" onclick="toggleCard('sent-card'); return false;">
+        following <%= FollowRequest.where(status: "accepted", sender: user).count %>
+      </a>
+    </p>
+  </div>
+
+  <!-- Followers List Card -->
+  <div class="card mt-3 d-none" id="followers-card">
+    <div class="card-body">
+      <h5 class="card-title">Followers</h5>
+      <% FollowRequest.where(status: "accepted", recipient: user).each do |request| %>
+        <p><%= request.sender.username %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Pending Requests List -->
+  <div class="card mt-3 d-none" id="pending-card">
+    <div class="card-body">
+      <h5 class="card-title">Pending Requests</h5>
+      <% FollowRequest.where(status: "pending", recipient: user).each do |request| %>
+        <p>
+          <%= link_to request.sender.username, user_path(request.sender) %><br>
+
+          <% if current_user == user %>
+            <%= button_to "Accept #{request.sender.username}'s request", accept_follow_request_path(request), method: :patch, class: "btn btn-success btn-sm mt-1" %>
+            <%= button_to "Decline #{request.sender.username}'s request", reject_follow_request_path(request), method: :patch, class: "btn btn-danger btn-sm mt-1" %>
+          <% end %>
+        </p>
+      <% end %>
+
+    </div>
+  </div>
+
+  <!-- Sent Requests List -->
+  <div class="card mt-3 d-none" id="sent-card">
+    <div class="card-body">
+      <h5 class="card-title">Sent Follow Requests</h5>
+      <% FollowRequest.where(status: "accepted", sender: user).each do |request| %>
+        <p><%= request.recipient.username %></p>
+      <% end %>
+    </div>
+  </div>
 </div>
+
+<% if current_user.present? && current_user != user %>
+  <% existing_request = FollowRequest.find_by(sender: current_user, recipient: user) %>
+
+  <% if existing_request.nil? || existing_request.status.to_s == "rejected" %>
+    <%= button_to follow_requests_path, method: :post, params: { follow_request: { sender_id: current_user.id, recipient_id: user.id } }, class: "btn btn-primary btn-sm" do %>
+      Follow
+    <% end %>
+  <% elsif existing_request.status.to_s == "pending" %>
+    <%= button_to follow_request_path(existing_request), method: :delete, class: "btn btn-warning btn-sm" do %>
+      Un-request
+    <% end %>
+  <% elsif existing_request.status.to_s == "accepted" %>
+    <%= button_to follow_request_path(existing_request), method: :delete, class: "btn btn-danger btn-sm" do %>
+      Un-follow
+    <% end %>
+  <% end %>
+<% end %>
+
+
+<script>
+  function toggleCard(cardId) {
+    const cards = ['followers-card', 'pending-card', 'sent-card'];
+    cards.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        if (id === cardId) {
+          el.classList.toggle('d-none');
+        } else {
+          el.classList.add('d-none');
+        }
+      }
+    });
+  }
+</script>

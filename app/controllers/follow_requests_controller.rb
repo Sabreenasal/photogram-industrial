@@ -23,6 +23,18 @@ class FollowRequestsController < ApplicationController
   def create
     @follow_request = FollowRequest.new(follow_request_params)
 
+ 
+    if @follow_request.sender == @follow_request.recipient
+      redirect_back fallback_location: root_path, alert: "You can't follow yourself."
+      return
+    end
+
+    existing_request = FollowRequest.find_by(sender: @follow_request.sender, recipient: @follow_request.recipient)
+    if existing_request
+      redirect_back fallback_location: root_path, alert: "Follow request already exists."
+      return
+    end
+
     respond_to do |format|
       if @follow_request.save
         format.html { redirect_to follow_requests_path, notice: "Follow request was successfully created." }
@@ -61,11 +73,11 @@ class FollowRequestsController < ApplicationController
 
   # DELETE /follow_requests/1
   def destroy
-    @follow_request.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to follow_requests_path, status: :see_other, notice: "Follow request was successfully destroyed." }
-      format.json { head :no_content }
+    if @follow_request.sender == current_user || @follow_request.recipient == current_user
+      @follow_request.destroy!
+      redirect_to follow_requests_path, notice: "Follow request was removed."
+    else
+      redirect_back fallback_location: root_path, alert: "Not authorized."
     end
   end
 
