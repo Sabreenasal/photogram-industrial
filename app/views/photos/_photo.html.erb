@@ -11,12 +11,14 @@
       
 
   <% photo.comments.each do |comment| %>
+         
           <div class="card my-2 ms-2">
             <div class="card-body py-2 px-3">
               <p class="card-text mb-1">
                 <strong><%= comment.author.username if comment.author %>:</strong> <%= comment.body %>
               </p>
               <div>
+
                 <%= link_to "Edit", edit_comment_path(comment), class: "btn btn-sm btn-outline-secondary" %>
                 <%= button_to "Delete", comment_path(comment), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
               </div>

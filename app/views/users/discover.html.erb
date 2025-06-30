@@ -19,6 +19,7 @@
   <% @user.leaders.each do |leader| %>
     <% leader.liked_photos.each do |photo| %>
       <%= render "photos/photo", photo: photo %>
+      <%= render "photos/likes", photo: photo %>
     <% end %>
   <% end %>
 </ul>
