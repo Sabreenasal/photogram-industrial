@@ -34,7 +34,7 @@ class User < ApplicationRecord
 
          mount_uploader :avatar_image, ImageUploader
   has_many :own_photos, class_name: "Photo", foreign_key: "owner_id"   
-  has_many :own_photos, foreign_key: :owner_id, class_name: "Photo"
+
 
   has_many :comments, foreign_key: :author_id 
   has_many :likes, foreign_key: :fan_id
