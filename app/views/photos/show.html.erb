@@ -3,7 +3,10 @@
 <%= render @photo %>
 
 <div>
-  <%= link_to "Edit photo", edit_photo_path(@photo) %> |
+  <%= link_to edit_photo_path(@photo), class: "text-muted btn btn-link btn-sm" do %>
+  <i class="fa fa-edit"></i>
+<% end %>
+ |
   <%= link_to "Back to photos", photos_path %>
 
   <%= button_to "Destroy this photo", @photo, method: :delete %>
