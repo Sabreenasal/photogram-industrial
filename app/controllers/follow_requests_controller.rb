@@ -19,11 +19,9 @@ class FollowRequestsController < ApplicationController
   def edit
   end
 
-  # POST /follow_requests
   def create
     @follow_request = FollowRequest.new(follow_request_params)
 
- 
     if @follow_request.sender == @follow_request.recipient
       redirect_back fallback_location: root_path, alert: "You can't follow yourself."
       return
@@ -35,14 +33,10 @@ class FollowRequestsController < ApplicationController
       return
     end
 
-    respond_to do |format|
-      if @follow_request.save
-        format.html { redirect_to follow_requests_path, notice: "Follow request was successfully created." }
-        format.json { render :show, status: :created, location: @follow_request }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @follow_request.errors, status: :unprocessable_entity }
-      end
+    if @follow_request.save
+      redirect_back fallback_location: root_path, notice: "Follow request was successfully created."
+    else
+      redirect_back fallback_location: root_path, alert: "Failed to create follow request."
     end
   end
 
@@ -71,11 +65,10 @@ class FollowRequestsController < ApplicationController
     redirect_back fallback_location: root_path, alert: "Follow request rejected."
   end
 
-  # DELETE /follow_requests/1
   def destroy
     if @follow_request.sender == current_user || @follow_request.recipient == current_user
       @follow_request.destroy!
-      redirect_to follow_requests_path, notice: "Follow request was removed."
+      redirect_back fallback_location: root_path, notice: "Follow request was removed."
     else
       redirect_back fallback_location: root_path, alert: "Not authorized."
     end

@@ -52,14 +52,20 @@ class PhotosController < ApplicationController
   end
 
   # DELETE /photos/1 or /photos/1.json
-  def destroy
-    @photo.destroy!
+  # def destroy
+  #   @photo.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to photos_path, status: :see_other, notice: "Photo was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html { redirect_to photos_path, status: :see_other, notice: "Photo was successfully destroyed." }
+  #     format.json { head :no_content }
+  #   end
+  # end
+def destroy
+  @photo = Photo.find(params[:id])
+  @photo.destroy
+
+  redirect_back fallback_location: photos_path, notice: "Photo was successfully deleted."
+end
 
   private
     
