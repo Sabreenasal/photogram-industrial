@@ -1,6 +1,5 @@
 class PhotosController < ApplicationController
   before_action :set_photo, only: %i[ show edit update destroy ]
-  
 
   # GET /photos or /photos.json
   def index
@@ -19,7 +18,7 @@ class PhotosController < ApplicationController
 
   # GET /photos/1/edit
   def edit
-    @photo = Photo.find(params[:id]) 
+    @photo = Photo.find(params[:id])
   end
 
   # POST /photos or /photos.json
@@ -51,30 +50,21 @@ class PhotosController < ApplicationController
     end
   end
 
-  # DELETE /photos/1 or /photos/1.json
-  # def destroy
-  #   @photo.destroy!
+  def destroy
+    @photo = Photo.find(params[:id])
+    @photo.destroy
 
-  #   respond_to do |format|
-  #     format.html { redirect_to photos_path, status: :see_other, notice: "Photo was successfully destroyed." }
-  #     format.json { head :no_content }
-  #   end
-  # end
-def destroy
-  @photo = Photo.find(params[:id])
-  @photo.destroy
-
-  redirect_back fallback_location: photos_path, notice: "Photo was successfully deleted."
-end
+    redirect_back fallback_location: photos_path, notice: "Photo was successfully deleted."
+  end
 
   private
-    
-    def set_photo
-      @photo = Photo.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def photo_params
-      params.require(:photo).permit(:image, :caption) 
-    end
+  def set_photo
+    @photo = Photo.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def photo_params
+    params.require(:photo).permit(:image, :caption)
+  end
 end
