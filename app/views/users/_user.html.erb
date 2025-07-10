@@ -1,9 +1,8 @@
-
 <div class="user-profile">
   <h2><%= user.username %></h2>
   <% if user.private? %>
-  <span class="badge text-bg-secondary">Private</span>
-<% end %>
+    <span class="badge text-bg-secondary">Private</span>
+  <% end %>
   <p>Email: <%= user.email %></p>
 
   <div>
@@ -86,7 +85,6 @@
     <% end %>
   <% end %>
 <% end %>
-
 
 <script>
   function toggleCard(cardId) {

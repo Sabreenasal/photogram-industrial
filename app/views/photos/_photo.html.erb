@@ -17,13 +17,14 @@
 
         <hr>
 
-<div class="ms-2 mt-2">
-  <%= render partial: "comments/comment", collection: photo.comments, as: :comment %>
-</div>
-      
+        <div class="ms-2 mt-2">
+          <%= render partial: "comments/comment", collection: photo.comments, as: :comment %>
+        </div>
+
         <div  class="mt-3 ms-2">
           <%= render "comments/form", comment: photo.comments.build %>
         </div>
       </div>
     </div>
   </div>
+</div>

@@ -4,9 +4,9 @@
 
 <div>
   <%= link_to edit_photo_path(@photo), class: "text-muted btn btn-link btn-sm" do %>
-  <i class="fa fa-edit"></i>
-<% end %>
- |
+    <i class="fa fa-edit"></i>
+  <% end %>
+  |
   <%= link_to "Back to photos", photos_path %>
 
   <%= button_to "Destroy this photo", @photo, method: :delete %>
