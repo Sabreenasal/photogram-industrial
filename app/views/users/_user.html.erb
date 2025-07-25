@@ -7,52 +7,70 @@
 
   <div>
     <p>
-      <a href="#" onclick="toggleCard('followers-card'); return false;">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#followersModal">
         followers <%= FollowRequest.where(status: "accepted", recipient: user).count %>
       </a>
     </p>
     <p>
-      <a href="#" onclick="toggleCard('pending-card'); return false;">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#pendingModal">
         pending <%= FollowRequest.where(status: "pending", recipient: user).count %>
       </a>
     </p>
     <p>
-      <a href="#" onclick="toggleCard('sent-card'); return false;">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#sentModal">
         following <%= FollowRequest.where(status: "accepted", sender: user).count %>
       </a>
     </p>
   </div>
+</div>
 
-  <!-- Followers List Card -->
-  <div class="card mt-3 d-none" id="followers-card">
-    <div class="card-body">
-      <h5 class="card-title">Followers</h5>
-      <% FollowRequest.where(status: "accepted", recipient: user).each do |request| %>
-        <p><%= link_to request.sender.username %></p>
-      <% end %>
+<!-- Followers Modal -->
+<div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="followersModalLabel">Followers</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% FollowRequest.where(status: "accepted", recipient: user).each do |request| %>
+          <p><%= link_to request.sender.username, user_path(request.sender) %></p>
+        <% end %>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- Pending Requests List -->
-  <div class="card mt-3 d-none" id="pending-card">
-    <div class="card-body">
-      <h5 class="card-title">Pending Requests</h5>
-      <% FollowRequest.where(status: "pending", recipient: user).each do |request| %>
-        <p>
-          <%= link_to request.sender.username, user_path(request.sender) %><br>
-        </p>
-      <% end %>
-
+<!-- Pending Requests Modal -->
+<div class="modal fade" id="pendingModal" tabindex="-1" aria-labelledby="pendingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pendingModalLabel">Pending Follow Requests</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% FollowRequest.where(status: "pending", recipient: user).each do |request| %>
+          <p><%= link_to request.sender.username, user_path(request.sender) %></p>
+        <% end %>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- Sent Requests List -->
-  <div class="card mt-3 d-none" id="sent-card">
-    <div class="card-body">
-      <h5 class="card-title">Sent Follow Requests</h5>
-      <% FollowRequest.where(status: "accepted", sender: user).each do |request| %>
-        <p><%= link_to request.recipient.username %></p>
-      <% end %>
+<!-- Sent Modal -->
+<div class="modal fade" id="sentModal" tabindex="-1" aria-labelledby="sentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sentModalLabel">Following</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% FollowRequest.where(status: "accepted", sender: user).each do |request| %>
+          <p><%= link_to request.recipient.username, user_path(request.recipient) %></p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
@@ -85,19 +103,3 @@
     <% end %>
   <% end %>
 <% end %>
-
-<script>
-  function toggleCard(cardId) {
-    const cards = ['followers-card', 'pending-card', 'sent-card'];
-    cards.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        if (id === cardId) {
-          el.classList.toggle('d-none');
-        } else {
-          el.classList.add('d-none');
-        }
-      }
-    });
-  }
-</script>

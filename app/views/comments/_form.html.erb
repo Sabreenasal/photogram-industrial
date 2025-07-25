@@ -1,28 +1,24 @@
-<div class="card mt-4">
-  <div class="card-body">
-    <%= form_with(model: comment) do |form| %>
-      <% if comment.errors.any? %>
-        <div class="alert alert-danger">
-          <h4><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h4>
-          <ul>
-            <% comment.errors.each do |error| %>
-              <li><%= error.full_message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
+<%= form_with(model: comment) do |form| %>
+  <% if comment.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h4>
+      <ul>
+        <% comment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-      <%= form.hidden_field :photo_id %>
+  <%= form.hidden_field :photo_id %>
 
-      <div class="mb-3">
-        <%= form.label :body %>
-        <%= form.text_area :body, class: "form-control" %>
-      </div>
-
-      <div>
-        <%= form.submit comment.persisted? ? "Update Comment" : "Create Comment", class: "btn btn-outline-secondary" %>
-
-      </div>
-    <% end %>
+  <div class="mb-3">
+    <%= form.label :body %>
+    <%= form.text_area :body, class: "form-control" %>
   </div>
-</div>
+
+  <div>
+    <%= form.submit comment.persisted? ? "Update Comment" : "Create Comment", class: "btn btn-outline-secondary" %>
+
+  </div>
+<% end %>

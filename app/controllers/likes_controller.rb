@@ -25,7 +25,10 @@ class LikesController < ApplicationController
 
     respond_to do |format|
       if @like.save
-        format.html { redirect_to feed_path(username: current_user.username), notice: "Like was successfully created." }
+        format.html {
+          redirect_to params[:redirect_to].presence || discover_path(username: current_user.username),
+                      notice: "Like was successfully created."
+        }
         format.json { render :show, status: :created, location: @like }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -52,19 +55,24 @@ class LikesController < ApplicationController
     @like.destroy!
 
     respond_to do |format|
-      format.html { redirect_to feed_path(username: current_user.username), status: :see_other, notice: "Like was successfully destroyed." }
+      format.html {
+        redirect_to params[:redirect_to].presence || discover_path(username: current_user.username),
+                    status: :see_other,
+                    notice: "Like was successfully destroyed."
+      }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_like
-      @like = Like.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def like_params
-      params.expect(like: [ :fan_id, :photo_id ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_like
+    @like = Like.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def like_params
+    params.require(:like).permit(:fan_id, :photo_id)
+  end
 end

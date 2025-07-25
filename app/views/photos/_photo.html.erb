@@ -12,10 +12,34 @@
           </div>
         <% end %>
 
+        <% if photo.owner != current_user %>
+          <% follow_request = FollowRequest.find_by(sender: current_user, recipient: photo.owner) %>
+
+          <% if follow_request.nil? %>
+            <%= button_to follow_requests_path(recipient_id: photo.owner.id), method: :post, class: "btn btn-primary btn-sm" do %>
+              Follow
+            <% end %>
+          <% elsif follow_request.status == "pending" %>
+            <button class="btn btn-warning btn-sm" disabled>Request Pending</button>
+
+          <% elsif follow_request.status == "accepted" %>
+            <%= button_to follow_request_path(follow_request), method: :delete, class: "btn btn-danger btn-sm" do %>
+              Unfollow
+            <% end %>
+
+          <% elsif follow_request.status == "rejected" %>
+            <%= button_to follow_requests_path(recipient_id: photo.owner.id), method: :post, class: "btn btn-primary btn-sm" do %>
+              Re-request Follow
+            <% end %>
+          <% end %>
+        <% end %>
+
         <h5 class="card-title"><%= photo.owner.username %></h5>
         <p class="card-text"><%= photo.caption %></p>
 
         <hr>
+
+        <%= render "photos/likes", photo: photo %>
 
         <div class="ms-2 mt-2">
           <%= render partial: "comments/comment", collection: photo.comments, as: :comment %>

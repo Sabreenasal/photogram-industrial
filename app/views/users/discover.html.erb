@@ -1,25 +1,20 @@
+<% shown_photo_ids = Set.new %>
+
 <div class="row">
   <div class="col-md-6 offset-3">
-    <h1>
-      Discover
-    </h1>
+    <h1>discover</h1>
+    <p>posts liked by people you follow
+      <p>
+      </div>
+    </div>
 
-    <ul class="nav nav-pills nav-justified">
-      <li class="nav-item">
-        <%= link_to "Posts", user_path(@user.username), class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to "Liked photos", liked_path(@user.username), class: "nav-link" %>
-      </li>
+    <ul>
+      <% @user.leaders.each do |leader| %>
+        <% leader.liked_photos.each do |photo| %>
+          <% unless shown_photo_ids.include?(photo.id) %>
+            <%= render "photos/photo", photo: photo %>
+            <% shown_photo_ids.add(photo.id) %>
+          <% end %>
+        <% end %>
+      <% end %>
     </ul>
-  </div>
-</div>
-
-<ul>
-  <% @user.leaders.each do |leader| %>
-    <% leader.liked_photos.each do |photo| %>
-      <%= render "photos/photo", photo: photo %>
-      <%= render "photos/likes", photo: photo %>
-    <% end %>
-  <% end %>
-</ul>
